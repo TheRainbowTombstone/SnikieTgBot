@@ -1,7 +1,7 @@
 from aiogram import Dispatcher
 from aiogram.dispatcher.filters import Text
 from aiogram.types import Message
-from SnikieBot.tgbot.keyboards.reply import menu, types_task_menu
+from tgbot.keyboards.reply import menu, types_task_menu
 
 
 async def show_menu(message: Message):
