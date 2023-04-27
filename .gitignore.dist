@@ -1,0 +1,8 @@
+.venv
+env/
+venv/
+ENV/
+
+.pyre/
+.idea/*
+.env
