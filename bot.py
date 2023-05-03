@@ -27,7 +27,6 @@ def register_all_handlers(dp):
     register_admin(dp)
     register_menu(dp)
     register_adding_task(dp)
-
     register_echo(dp)
 
 
