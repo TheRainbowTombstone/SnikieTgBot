@@ -30,8 +30,6 @@ async def viewing_task(call: CallbackQuery):
 
 
 
-
-
 def register_menu(dp: Dispatcher):
     dp.register_message_handler(show_menu, commands=["start"], state="*")
 
