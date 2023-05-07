@@ -5,4 +5,5 @@ ENV/
 
 .pyre/
 .idea/*
-.env.env
+.env
+__pycache__
