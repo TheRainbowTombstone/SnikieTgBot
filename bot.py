@@ -9,7 +9,8 @@ from tgbot.config import load_config
 from tgbot.filters.admin import AdminFilter
 from tgbot.handlers.admin import register_admin
 from tgbot.handlers.echo import register_echo
-from tgbot.handlers.user import register_menu, register_categories_task, register_adding_task, register_viewing_task
+from tgbot.handlers.user import register_menu, register_categories_task, register_adding_task, register_viewing_task, \
+    register_task_text, register_task_deadline
 from tgbot.middlewares.environment import EnvironmentMiddleware
 
 logger = logging.getLogger(__name__)
@@ -29,6 +30,8 @@ def register_all_handlers(dp):
     register_categories_task(dp)
     register_adding_task(dp)
     register_viewing_task(dp)
+    register_task_text(dp)
+    register_task_deadline(dp)
 
     register_echo(dp)
 

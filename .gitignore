@@ -5,4 +5,4 @@ ENV/
 
 .pyre/
 .idea/*
-.env
+.env.env
