@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from tgbot.keyboards.callback_datas import *
+from tgbot.keyboards.callback_datas import category_callback, showing_callback
 
 menu = InlineKeyboardMarkup(
     inline_keyboard=[
@@ -55,19 +55,19 @@ view_task_categories_menu = InlineKeyboardMarkup(
 period_task_menu = InlineKeyboardMarkup(
     inline_keyboard=[
         [
-            InlineKeyboardButton(text="Завтра", callback_data=category_callback.new(action="yesday", category="back")),
-            InlineKeyboardButton(text="Послезавтра", callback_data=category_callback.new(action="aftom", category="back"))
+            InlineKeyboardButton(text="Завтра", callback_data=showing_callback.new(date="yesday")),
+            InlineKeyboardButton(text="Послезавтра", callback_data=showing_callback.new(date="aftom"))
         ],
         [
-            InlineKeyboardButton(text="Конкретная дата", callback_data=category_callback.new(action="date", category="back")),
-            InlineKeyboardButton(text="Ближайшая неделя", callback_data=category_callback.new(action="thisweek", category="back"))
+            InlineKeyboardButton(text="Конкретная дата", callback_data=showing_callback.new(date="date")),
+            InlineKeyboardButton(text="Ближайшая неделя", callback_data=showing_callback.new(date="thisweek"))
         ],
         [
-            InlineKeyboardButton(text="Конкретная неделя", callback_data=category_callback.new(action="specweek", category="back")),
-            InlineKeyboardButton(text="Ближайший месяц", callback_data=category_callback.new(action="thismonth", category="back"))
+            InlineKeyboardButton(text="Конкретная неделя", callback_data=showing_callback.new(date="specweek")),
+            InlineKeyboardButton(text="Ближайший месяц", callback_data=showing_callback.new(date="thismonth"))
         ],
         [
-            InlineKeyboardButton(text="Назад", callback_data=category_callback.new(action="back", category="back"))
+            InlineKeyboardButton(text="Назад", callback_data=showing_callback.new(date="back"))
         ]
     ],
     resize_keyboard=True

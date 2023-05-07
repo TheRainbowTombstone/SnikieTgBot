@@ -2,11 +2,14 @@ from aiogram import Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.types import Message, CallbackQuery
+from aiogram.utils.callback_data import CallbackData
 
-from tgbot.database import Task
+from tgbot import database
+from tgbot.database import Task, DBComands
 from tgbot.filters.states import Load_task
 from tgbot.keyboards.inline import menu, add_task_categories_menu, view_task_categories_menu, period_task_menu
 
+db = database.DBComands()
 
 async def show_menu(message: Message):
     await message.answer("Что вы хотите сделать?", reply_markup=menu)
@@ -15,18 +18,9 @@ async def back_show_menu(call: CallbackQuery):
     await call.message.edit_text("Что вы хотите сделать?")
     await call.message.edit_reply_markup(reply_markup=menu)
 
-async def back_view_categories_task(call: CallbackQuery):
-    await call.message.edit_text("К какой категории относится эта задача?")
-    await call.message.edit_reply_markup(reply_markup=view_task_categories_menu)
-
 async def add_categories_task(call: CallbackQuery):
     await call.message.edit_text("К какой категории относится эта задача?")
     await call.message.edit_reply_markup(reply_markup=add_task_categories_menu)
-
-async def view_categories_task(call: CallbackQuery):
-    await call.message.edit_text("К какой категории относится эта задача?")
-    await call.message.edit_reply_markup(reply_markup=view_task_categories_menu)
-
 
 async def adding_task(call: CallbackQuery):
     await call.message.edit_text("Опишите вашу задачу!")
@@ -49,15 +43,27 @@ async def task_deadline(message: Message, state: FSMContext):
     data = await state.get_data()
     task: Task = data.get("task")
     deadline = message.text
+    await task.create()
 
     await message.answer("Ваща задача добавлена.")
-    await state.finish()
+    await state.reset_state()
 
+
+
+async def view_categories_task(call: CallbackQuery):
+    await call.message.edit_text("К какой категории относится эта задача?")
+    await call.message.edit_reply_markup(reply_markup=view_task_categories_menu)
 
 async def viewing_task(call: CallbackQuery):
     await call.message.edit_text("За какой период вы хотите посмотреть задачи?")
     await call.message.edit_reply_markup(reply_markup=period_task_menu)
 
+async def show_tasks(call: CallbackQuery):
+    all_tasks = await database.Task.get()
+    for _ in all_tasks:
+        text = ("<b>Задача:</b> {task} \n"
+                "<b>Дедлайн:</b> {deadline}")
+        await call.message.answer(text)
 
 
 def register_menu(dp: Dispatcher):
@@ -92,4 +98,15 @@ def register_task_text(dp: Dispatcher):
     dp.register_message_handler(task_text, state=Load_task.TextT)
 def register_task_deadline(dp: Dispatcher):
     dp.register_message_handler(task_deadline, state=Load_task.DeadlineT)
+
+def register_show_tasks(dp: Dispatcher):
+    dp.register_callback_query_handler(show_tasks, text_contains=["yesday"], state="*")
+    dp.register_callback_query_handler(show_tasks, text_contains=["aftom"], state="*")
+    dp.register_callback_query_handler(show_tasks, text_contains=["date"], state="*")
+    dp.register_callback_query_handler(show_tasks, text_contains=["thisweek"], state="*")
+    dp.register_callback_query_handler(show_tasks, text_contains=["specweek"], state="*")
+    dp.register_callback_query_handler(show_tasks, text_contains=["thismonth"], state="*")
+
+    dp.register_callback_query_handler(view_categories_task, text_contains=["back"], state="*")
+
 
